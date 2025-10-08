@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NewsHub - Stay informed with the latest news from around the world">
+    <meta name="keywords" content="news, breaking news, world news, technology, business">
+    <title>NewsHub - Breaking News, Latest News and Videos</title>
+    <style>
+        /* ============================
+           CSS Reset & Base Styles
+           ============================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* CNN-inspired Color Palette */
+            --primary-red: #cc0000;
+            --primary-red-hover: #a00000;
+            --dark-bg: #000000;
+            --text-primary: #262626;
+            --text-secondary: #666666;
+            --text-light: #999999;
+            --border-color: #e6e6e6;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-hover: #f0f0f0;
+            --error-color: #d32f2f;
+            
+            /* Spacing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            
+            /* Typography */
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ============================
+           Header - CNN Style
+           ============================ */
+        .header {
+            background: var(--dark-bg);
+            color: white;
+            border-bottom: 3px solid var(--primary-red);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-top {
+            background: var(--dark-bg);
+            padding: 0.75rem 0;
+        }
+
+        .header-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            color: var(--primary-red);
+            text-transform: uppercase;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .live-badge {
+            background: var(--primary-red);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* ============================
+           Navigation Bar
+           ============================ */
+        .nav-bar {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0;
+        }
+
+        .nav-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-item {
+            padding: 0.875rem var(--spacing-sm);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            background: none;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--primary-red);
+            border-bottom-color: var(--primary-red);
+        }
+
+        /* ============================
+           Main Content
+           ============================ */
+        .main {
+            flex: 1;
+            background: var(--bg-secondary);
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: var(--spacing-lg) var(--spacing-md);
+        }
+
+        /* ============================
+           Controls Section - CNN Style
+           ============================ */
+        .controls {
+            background: var(--bg-primary);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            border-radius: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            align-items: center;
+        }
+
+        .search-wrapper {
+            flex: 1;
+            min-width: 280px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem var(--spacing-md);
+            padding-right: 3rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            font-family: var(--font-sans);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            padding: 0 var(--spacing-md);
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .search-btn:hover {
+            color: var(--primary-red);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .filter-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .language-select,
+        .category-select {
+            padding: 0.75rem var(--spacing-sm);
+            border: 2px solid var(--border-color);
+            border-radius: 0;
+            font-size: 0.875rem;
+            font-weight: 600;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+            font-family: var(--font-sans);
+        }
+
+        .language-select:focus,
+        .category-select:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+
+        /* ============================
+           Error Message
+           ============================ */
+        .error-message {
+            background: #ffebee;
+            color: var(--error-color);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            border-left: 4px solid var(--error-color);
+            font-weight: 600;
+            border-radius: 2px;
+        }
+
+        /* ============================
+           News Grid - CNN Layout
+           ============================ */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        /* ============================
+           Article Card - CNN Style
+           ============================ */
+        .article-card {
+            background: var(--bg-primary);
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .article-card:hover {
+            border-bottom-color: var(--primary-red);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: var(--bg-hover);
+            display: block;
+        }
+
+        .article-content {
+            padding: var(--spacing-md);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-category {
+            color: var(--primary-red);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-xs);
+            line-height: 1.3;
+            color: var(--text-primary);
+        }
+
+        .article-snippet {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-sm);
+            line-height: 1.5;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            padding-top: var(--spacing-xs);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .article-source {
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .article-date {
+            font-weight: 400;
+        }
+
+        /* ============================
+           Skeleton Loader
+           ============================ */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .skeleton-card {
+            background: var(--bg-primary);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .skeleton-image {
+            width: 100%;
+            height: 200px;
+        }
+
+        .skeleton-content {
+            padding: var(--spacing-md);
+        }
+
+        .skeleton-title {
+            height: 1.5rem;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .skeleton-text {
+            height: 1rem;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .skeleton-text:last-child {
+            width: 60%;
+        }
+
+        /* ============================
+           Pagination - CNN Style
+           ============================ */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-lg) 0;
+            background: var(--bg-primary);
+            margin-top: var(--spacing-lg);
+        }
+
+        .pagination-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: 0.75rem var(--spacing-md);
+            background: var(--dark-bg);
+            color: white;
+            border: none;
+            font-size: 0.875rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: var(--primary-red);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            padding: 0 var(--spacing-sm);
+            text-transform: uppercase;
+        }
+
+        /* ============================
+           Footer - CNN Style
+           ============================ */
+        .footer {
+            background: var(--dark-bg);
+            color: #999;
+            padding: var(--spacing-xl) 0 var(--spacing-lg);
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary-red);
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid #333;
+        }
+
+        .footer-link {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .footer-bottom a {
+            color: var(--primary-red);
+            text-decoration: none;
+        }
+
+        .footer-bottom a:hover {
+            text-decoration: underline;
+        }
+
+        /* ============================
+           Empty State
+           ============================ */
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-xl) var(--spacing-md);
+            background: var(--bg-primary);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .empty-state-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-primary);
+        }
+
+        .empty-state-message {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* ============================
+           Responsive Design
+           ============================ */
+        @media (max-width: 992px) {
+            .news-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            .header-right {
+                gap: var(--spacing-sm);
+            }
+
+            .nav-item {
+                font-size: 0.75rem;
+                padding: 0.75rem 0.75rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-wrapper {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .filter-group {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .language-select,
+            .category-select {
+                flex: 1;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
+            }
+
+            .pagination {
+                flex-wrap: wrap;
+            }
+
+            .pagination-btn {
+                flex: 1;
+                min-width: 120px;
+                justify-content: center;
+            }
+
+            .page-info {
+                width: 100%;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: var(--spacing-xs);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.75rem;
+            }
+
+            .live-badge {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.5rem;
+            }
+
+            .article-title {
+                font-size: 1rem;
+            }
+
+            .container {
+                padding: var(--spacing-md) var(--spacing-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-top">
+            <div class="header-content">
+                <h1 class="logo">NewsHub</h1>
+                <div class="header-right">
+                    <span class="live-badge">● LIVE</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation Bar -->
+        <nav class="nav-bar">
+            <div class="nav-content">
+                <button class="nav-item active" data-category="">World</button>
+                <button class="nav-item" data-category="business">Business</button>
+                <button class="nav-item" data-category="tech">Tech</button>
+                <button class="nav-item" data-category="entertainment">Entertainment</button>
+                <button class="nav-item" data-category="sports">Sports</button>
+                <button class="nav-item" data-category="health">Health</button>
+                <button class="nav-item" data-category="science">Science</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Controls Section -->
+            <div class="controls">
+                <div class="search-wrapper">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="search-input" 
+                        placeholder="Search for news, topics, and more..."
+                        aria-label="Search news"
+                    >
+                    <button id="searchBtn" class="search-btn" aria-label="Search">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="filter-group">
+                    <label for="languageSelect" class="filter-label">Language:</label>
+                    <select id="languageSelect" class="language-select" aria-label="Select language">
+                        <option value="en">English</option>
+                        <option value="ru">Russian</option>
+                        <option value="hy">Armenian</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+            <!-- News Grid -->
+            <div id="newsGrid" class="news-grid">
+                <!-- Articles will be dynamically inserted here -->
+            </div>
+
+            <!-- Pagination Controls -->
+            <div id="pagination" class="pagination" style="display: none;">
+                <button id="prevBtn" class="pagination-btn" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Previous
+                </button>
+                <span id="pageInfo" class="page-info">Page 1</span>
+                <button id="nextBtn" class="pagination-btn">
+                    Next
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">NewsHub</div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">About</a>
+                <a href="#" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Use</a>
+                <a href="#" class="footer-link">Advertise</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 NewsHub. All rights reserved. Powered by <a href="https://www.thenewsapi.com/" target="_blank" rel="noopener">TheNewsAPI</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /**
+         * NewsHub Application
+         * A CNN-style news aggregator using TheNewsAPI with CORS proxy
+         */
+
+        // ============================
+        // Configuration
+        // ============================
+        const CONFIG = {
+            API_KEY: 'bDiWF9NW1TePAqZ2c5MwOrH7tMFIKdN2cu57fvPF',
+            // Using CORS proxy to bypass browser restrictions
+            CORS_PROXY: 'https://api.allorigins.win/raw?url=',
+            BASE_URL: 'https://api.thenewsapi.com/v1/news',
+            ARTICLES_PER_PAGE: 12,
+            DEFAULT_LANGUAGE: 'en',
+            DEFAULT_CATEGORY: '',
+        };
+
+        // ============================
+        // Application State
+        // ============================
+        const state = {
+            currentPage: 1,
+            language: CONFIG.DEFAULT_LANGUAGE,
+            category: CONFIG.DEFAULT_CATEGORY,
+            searchQuery: '',
+            isLoading: false,
+        };
+
+        // ============================
+        // DOM Elements
+        // ============================
+        const elements = {
+            newsGrid: document.getElementById('newsGrid'),
+            searchInput: document.getElementById('searchInput'),
+            searchBtn: document.getElementById('searchBtn'),
+            languageSelect: document.getElementById('languageSelect'),
+            prevBtn: document.getElementById('prevBtn'),
+            nextBtn: document.getElementById('nextBtn'),
+            pageInfo: document.getElementById('pageInfo'),
+            pagination: document.getElementById('pagination'),
+            errorMessage: document.getElementById('errorMessage'),
+            navItems: document.querySelectorAll('.nav-item'),
+        };
+
+        // ============================
+        // API Functions
+        // ============================
+
+        /**
+         * Fetch news articles from TheNewsAPI
+         * @returns {Promise<Object>} API response
+         */
+        async function fetchNews() {
+            const queryParams = new URLSearchParams({
+                api_token: CONFIG.API_KEY,
+                limit: CONFIG.ARTICLES_PER_PAGE,
+                page: state.currentPage,
+                language: state.language,
+            });
+
+            if (state.searchQuery) {
+                queryParams.set('search', state.searchQuery);
+            }
+
+            if (state.category) {
+                queryParams.set('categories', state.category);
+            }
+
+            const endpoint = state.searchQuery || state.category ? 'all' : 'top';
+            const apiUrl = `${CONFIG.BASE_URL}/${endpoint}?${queryParams.toString()}`;
+            const url = `${CONFIG.CORS_PROXY}${encodeURIComponent(apiUrl)}`;
+
+            try {
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+
+        // ============================
+        // Render Functions
+        // ============================
+
+        function createSkeletonCard() {
+            return `
+                <div class="skeleton-card">
+                    <div class="skeleton skeleton-image"></div>
+                    <div class="skeleton-content">
+                        <div class="skeleton skeleton-title"></div>
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                        <div class="skeleton skeleton-text"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showSkeletonLoaders() {
+            const skeletons = Array(CONFIG.ARTICLES_PER_PAGE)
+                .fill(null)
+                .map(() => createSkeletonCard())
+                .join('');
+            
+            elements.newsGrid.innerHTML = skeletons;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Unknown date';
+            
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+                if (diffHours === 0) {
+                    const diffMinutes = Math.floor(diffTime / (1000 * 60));
+                    return `${diffMinutes}m ago`;
+                }
+                return `${diffHours}h ago`;
+            } else if (diffDays === 1) {
+                return 'Yesterday';
+            } else if (diffDays < 7) {
+                return `${diffDays}d ago`;
+            } else {
+                return date.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric'
+                });
+            }
+        }
+
+        function getCategoryName(categories) {
+            if (!categories || categories.length === 0) return 'NEWS';
+            return categories[0].toUpperCase();
+        }
+
+        function createArticleCard(article) {
+            const {
+                title = 'No title available',
+                description = 'No description available',
+                image_url,
+                source = 'Unknown',
+                published_at,
+                url,
+                categories,
+            } = article;
+
+            const imageUrl = image_url || 'https://via.placeholder.com/400x200/000000/cc0000?text=NewsHub';
+            const categoryName = getCategoryName(categories);
+            const safeUrl = (url || '#').replace(/'/g, "\\'");
+            
+            return `
+                <article class="article-card" onclick="openArticle('${safeUrl}')">
+                    <img 
+                        src="${imageUrl}" 
+                        alt="${title.replace(/"/g, '&quot;')}" 
+                        class="article-image"
+                        loading="lazy"
+                        onerror="this.src='https://via.placeholder.com/400x200/000000/cc0000?text=No+Image'"
+                    >
+                    <div class="article-content">
+                        <div class="article-category">${categoryName}</div>
+                        <h2 class="article-title">${title}</h2>
+                        <p class="article-snippet">${description}</p>
+                        <div class="article-meta">
+                            <span class="article-source">${source}</span>
+                            <span class="article-date">${formatDate(published_at)}</span>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function renderArticles(articles) {
+            if (!articles || articles.length === 0) {
+                showEmptyState();
+                return;
+            }
+
+            const articlesHTML = articles.map(createArticleCard).join('');
+            elements.newsGrid.innerHTML = articlesHTML;
+        }
+
+        function showEmptyState() {
+            elements.newsGrid.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">📰</div>
+                    <h3 class="empty-state-title">No articles found</h3>
+                    <p class="empty-state-message">Try adjusting your search or filters</p>
+                </div>
+            `;
+            elements.pagination.style.display = 'none';
+        }
+
+        function showError(message) {
+            elements.errorMessage.innerHTML = `<strong>Error:</strong> ${message}<br><small>Tip: The API might be experiencing issues. Please try again in a few moments.</small>`;
+            elements.errorMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                elements.errorMessage.style.display = 'none';
+            }, 8000);
+        }
+
+        function updatePagination() {
+            elements.pageInfo.textContent = `Page ${state.currentPage}`;
+            elements.prevBtn.disabled = state.currentPage === 1;
+            elements.pagination.style.display = 'flex';
+        }
+
+        // ============================
+        // Event Handlers
+        // ============================
+
+        async function loadNews() {
+            if (state.isLoading) return;
+            
+            state.isLoading = true;
+            showSkeletonLoaders();
+            elements.errorMessage.style.display = 'none';
+
+            try {
+                const data = await fetchNews();
+                
+                if (data && data.data) {
+                    renderArticles(data.data);
+                    updatePagination();
+                } else {
+                    showEmptyState();
+                }
+            } catch (error) {
+                showError(error.message || 'Failed to load news. Please check your internet connection and try again.');
+                showEmptyState();
+            } finally {
+                state.isLoading = false;
+            }
+        }
+
+        function handleSearch() {
+            state.searchQuery = elements.searchInput.value.trim();
+            state.currentPage = 1;
+            loadNews();
+        }
+
+        function handleLanguageChange() {
+            state.language = elements.languageSelect.value;
+            state.currentPage = 1;
+            loadNews();
+        }
+
+        function handleCategoryChange(category) {
+            state.category = category;
+            state.currentPage = 1;
+            
+            // Update active nav item
+            elements.navItems.forEach(item => {
+                if (item.dataset.category === category) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            loadNews();
+        }
+
+        function handlePrevPage() {
+            if (state.currentPage > 1) {
+                state.currentPage--;
+                loadNews();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function handleNextPage() {
+            state.currentPage++;
+            loadNews();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openArticle(url) {
+            if (url && url !== '#') {
+                window.open(url, '_blank', 'noopener,noreferrer');
+            }
+        }
+
+        // ============================
+        // Event Listeners
+        // ============================
+
+        function initEventListeners() {
+            // Search
+            elements.searchBtn.addEventListener('click', handleSearch);
+            elements.searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    handleSearch();
+                }
+            });
+
+            // Language filter
+            elements.languageSelect.addEventListener('change', handleLanguageChange);
+
+            // Category navigation
+            elements.navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    handleCategoryChange(item.dataset.category);
+                });
+            });
+
+            // Pagination
+            elements.prevBtn.addEventListener('click', handlePrevPage);
+            elements.nextBtn.addEventListener('click', handleNextPage);
+        }
+
+        // ============================
+        // Initialization
+        // ============================
+
+        function init() {
+            console.log('NewsHub initialized');
+            initEventListeners();
+            loadNews();
+        }
+
+        // Start the application
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
